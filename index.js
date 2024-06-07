@@ -35,19 +35,15 @@
 // with named function
 
 console.log('before');
-getUserData(1, getRepositories);
+getUserData(1, getRepositoriesHelper);
 console.log('after');
 
 function displayCommits(commits){
     console.log(commits);
 }
 
-function getCommits(repos){
+function getCommitsHelper(repos){
     getCommits(repos[0], displayCommits);
-}
-
-function getRepositories(user){
-    getRepositories(user.name, getCommits);
 }
 
 function getUserData(id, cb){
@@ -57,11 +53,17 @@ function getUserData(id, cb){
     }, 2000);
 }
 
+function getRepositoriesHelper(user){
+    console.log('user is '+user);
+    getRepositories(user.name, getCommitsHelper);
+}
+
 function getRepositories(username, cb){
     setTimeout(()=>{
+        console.log(username, cb);
         console.log('reading repo of username '+username);
         cb(['repo1', 'repo2', 'repo3']);
-    }, 2000);   
+    }, 2000);
 }
 
 function getCommits(repo, cb){
